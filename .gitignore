@@ -1,0 +1,35 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.code-workspace
+
+# Dependencies
+node_modules/
+
+# Bun cache
+.bun/
+
+# Build artifacts
+build/
+dist/
+coverage/
+.out/
+.tmp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.env
+.env.*
+*.local

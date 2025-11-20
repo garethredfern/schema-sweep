@@ -1,0 +1,16 @@
+{
+  "name": "schemasweep",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "run": "bun src/cli.ts"
+  },
+  "dependencies": {
+    "globby": "^14.0.0",
+    "graphql": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
