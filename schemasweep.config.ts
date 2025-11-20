@@ -8,9 +8,9 @@ export interface SchemaSweepConfig {
 
 const config: SchemaSweepConfig = {
   // Root of the project you want to scan
-  projectRoot: "/absolute/path/to/your/project",
+  projectRoot: "/external",
 
-  // Craft/Vendure GraphQL endpoint
+  // GraphQL endpoint
   graphqlEndpoint:
     process.env.GRAPHQL_ENDPOINT || "http://localhost:3000/graphql",
 
@@ -20,11 +20,7 @@ const config: SchemaSweepConfig = {
   },
 
   // Where your query *strings* live
-  queryGlobs: [
-    "pages/**/*.{vue,ts,js}",
-    "components/**/*.{vue,ts,js}",
-    "server/**/*.{ts,js}",
-  ],
+  queryGlobs: ["**/*.{ts,js,tsx,jsx,svelte,astro}"],
 };
 
 export default config;

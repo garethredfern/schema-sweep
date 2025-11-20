@@ -33,3 +33,6 @@ pnpm-debug.log*
 .env
 .env.*
 *.local
+external/
+reports/
+scripts/

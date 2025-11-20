@@ -61,8 +61,38 @@ async function loadConfig(): Promise<SchemaSweepConfig> {
   const moduleUrl = pathToFileURL(configPath).href;
   const mod = await import(moduleUrl);
   const config = (mod.default || mod) as SchemaSweepConfig;
+  const normalizedProjectRoot = resolveProjectRoot(
+    path.dirname(configPath),
+    config.projectRoot
+  );
 
-  return config;
+  return {
+    ...config,
+    projectRoot: normalizedProjectRoot,
+  };
+}
+
+function resolveProjectRoot(configDir: string, projectRoot: string): string {
+  if (path.isAbsolute(projectRoot)) {
+    if (fs.existsSync(projectRoot)) {
+      return projectRoot;
+    }
+
+    const segments = projectRoot.split("/").filter(Boolean);
+    if (segments.length === 1) {
+      return path.resolve(configDir, projectRoot.slice(1));
+    }
+
+    const localFallback = path.resolve(configDir, projectRoot.slice(1));
+    if (fs.existsSync(localFallback)) {
+      return localFallback;
+    }
+
+    // Unknown absolute path – leave as-is so the caller can fix it.
+    return projectRoot;
+  }
+
+  return path.resolve(configDir, projectRoot);
 }
 
 // ---------- GraphQL schema introspection ----------
@@ -241,7 +271,11 @@ async function writeReport(
     };
   }
 
-  const outputPath = path.join(config.projectRoot, "schemasweep-report.json");
+  const outputRoot = process.cwd();
+  const reportsDir = path.join(outputRoot, "reports");
+  await fs.promises.mkdir(reportsDir, { recursive: true });
+
+  const outputPath = path.join(reportsDir, "schemasweep-report.json");
   await fs.promises.writeFile(outputPath, JSON.stringify(report, null, 2), {
     encoding: "utf8",
   });
